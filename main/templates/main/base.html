@@ -1,0 +1,170 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock title %}</title>
+
+    {% comment %} bootstrap {% endcomment %} 
+    <link rel="stylesheet" href="{% static 'bootstrap\css\bootstrap.min.css' %}">
+    {% comment %} css {% endcomment %}
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+      <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --main-font: 'Montserrat', sans-serif;
+    }
+  </style>
+</head>
+<body>
+    <header class="header sticky-top">
+    <div class="header-container">
+        <!-- Ліва частина (навігація) -->
+        <navbar class="header-nav ">
+            <ul class="header-list">
+                <li><a href="/" class="nav-a m-3">Home</a></li>
+                <li><a href="/shop" class="nav-a m-3">Shop</a></li>
+            </ul>
+        </navbar>
+           <!-- Центр (лого) - тепер перший у контейнері -->
+        <div class="header-logo">
+            <a href="/randomizer"><img src="{% static 'img/blacklogo.png' %}" alt="Logo" class="di-logo"></a>
+        </div>
+            <div class="header-profile">
+                <a href="{% url "cart:cart_detail" %}"><img src="{% static 'img/carticon.png' %}" class="carticon" alt=""></a>
+                {% if user.is_authenticated %}
+                    <a href="{% url "users:profile" %}">PROFILE</a>
+                {% else %}
+                    <a href="{% url "users:login" %}" class="m-2">LOGIN</a>
+                {% endif %}
+                <p class="cart-quantity">
+                    {% with cart_quantity=cart|length %}
+                        {% if cart_quantity > 0 %}
+                            {{ cart_quantity }}
+                        {% else %}
+                            0
+                        {% endif %}
+                    {% endwith %}
+                </p>
+            </div>
+        </div>
+        
+    </header>
+
+
+    
+    <div class="container">
+
+        {% block content %}
+        {% endblock content %}
+    </div>
+
+    <div class="right-sidebar">
+  <nav>
+    <ul>
+      <li><a href="/randomizer">Randomizer</a></li>
+      <li><a href="/gallery">Gallery</a></li>
+      <li><a href="/shop">Shop</a></li>
+      <li><a href="/about">About</a></li>
+    </ul>
+  </nav>
+</div>
+
+
+    {% comment %} <img src="{% static 'img/frame1.png' %}" class="frame1" alt="">
+    <img src="{% static 'img/frame2.png' %}" class="frame2" alt="">
+    <img src="{% static 'img/frame3.png' %}" class="frame3" alt="">
+    <img src="{% static 'img/frame4.png' %}" class="frame4" alt=""> {% endcomment %}
+    
+    <div class="valsidebar">
+        <div class="image" id="img1"><img src="{% static 'img/frame1.png' %}"></div>
+  <div class="image" id="img2"><img src="{% static 'img/frame2.png' %}"></div>
+  <div class="image" id="img3"><img src="{% static 'img/frame3.png' %}"></div>
+  <div class="image" id="img4"><img src="{% static 'img/frame4.png' %}"></div></div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+  const container = document.querySelector('.valsidebar');
+  const images = document.querySelectorAll('.image');
+
+  const bounds = {
+    width: container.clientWidth,
+    height: container.clientHeight
+  };
+
+  const balls = Array.from(images).map(img => {
+    return {
+      el: img,
+      x: Math.random() * (bounds.width - 60),
+      y: Math.random() * (bounds.height - 60),
+      dx: (Math.random() - 0.5) * 2,
+      dy: (Math.random() - 0.5) * 2,
+      radius: 30
+    };
+  });
+
+  // обробка кліків
+  balls.forEach(b => {
+    b.el.addEventListener('click', () => {
+      b.el.style.visibility = 'hidden';
+      setTimeout(() => {
+        b.el.style.visibility = 'visible';
+      }, 10000); // 10 секунд
+    });
+  });
+
+  function move() {
+    for (let i = 0; i < balls.length; i++) {
+      const b = balls[i];
+
+      // якщо прихований — не рухати
+      if (b.el.style.visibility === 'hidden') continue;
+
+      b.x += b.dx;
+      b.y += b.dy;
+
+      if (b.x <= 0 || b.x + 60 >= bounds.width) b.dx *= -1;
+      if (b.y <= 0 || b.y + 60 >= bounds.height) b.dy *= -1;
+
+      for (let j = i + 1; j < balls.length; j++) {
+        const b2 = balls[j];
+        if (b2.el.style.visibility === 'hidden') continue;
+
+        const dx = b.x - b2.x;
+        const dy = b.y - b2.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 60) {
+          const angle = Math.atan2(dy, dx);
+          const speed1 = Math.sqrt(b.dx ** 2 + b.dy ** 2);
+          const speed2 = Math.sqrt(b2.dx ** 2 + b2.dy ** 2);
+          b.dx = Math.cos(angle) * speed2;
+          b.dy = Math.sin(angle) * speed2;
+          b2.dx = -Math.cos(angle) * speed1;
+          b2.dy = -Math.sin(angle) * speed1;
+        }
+      }
+
+      b.el.style.transform = `translate(${b.x}px, ${b.y}px)`;
+    }
+
+    requestAnimationFrame(move);
+  }
+
+  move();
+});
+</script>
+
+  
+
+
+
+
+
+
+
+
+    {% comment %} js for boorstrap {% endcomment %}
+    <script src="{% static 'bootstrap\js\bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

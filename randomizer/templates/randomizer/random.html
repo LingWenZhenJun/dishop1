@@ -1,0 +1,248 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Randomizer{% endblock title %}
+
+{% block content %}
+ <div class="randomizer-page-header-container">
+    <h1 class="randomizer-page-title">Randomizer</h1>
+</div>  
+
+<form method="POST" id="agents-form" class="randomizer-container">
+    {% csrf_token %}
+
+    <!-- Ліва панель з кнопками -->
+    <div class="side-panel">
+        <div class="selection-buttons">
+        <button type="button" class="panel-btn select-all-btn" onclick="selectAll()">
+            Select All
+        </button>
+        <button type="button" class="panel-btn clear-all-btn" onclick="clearAll()">
+            Clear All
+        </button>
+    </div>
+        <div class="role-buttons">
+            <button type="button" class="role-btn sentinel-btn" onclick="selectByClass('Sentinel')">
+                <img src="{% static 'img/frame2.png' %}" alt="Sentinel" class="role-icon">
+                <span class="role-buttons-name">Sentinel</span>
+            </button>
+            <button type="button" class="role-btn duelist-btn" onclick="selectByClass('Duelist')">
+                <img src="{% static 'img/frame4.png' %}" alt="Duelist" class="role-icon">
+                <span class="role-buttons-name">Duelist</span>
+            </button>
+            <button type="button" class="role-btn controller-btn" onclick="selectByClass('Controller')">
+                <img src="{% static 'img/frame3.png' %}" alt="Controller" class="role-icon">
+                <span class="role-buttons-name">Controller</span>
+            </button>
+            <button type="button" class="role-btn initiator-btn" onclick="selectByClass('Initiator')">
+                <img src="{% static 'img/frame1.png' %}" alt="Initiator" class="role-icon">
+                <span class="role-buttons-name">Initiator</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Матриця агентів (відсортована за алфавітом) -->
+    <div class="agent-grid">
+        {% for agent in agents|dictsort:"name" %}
+            <label class="agent-label" data-class="{{ agent.role }}">
+                <input type="checkbox" name="selected_agents" value="{{ agent.id }}"
+                       {% if agent.id|stringformat:"s" in selected_ids %}checked{% endif %}
+                       style="display: none;">
+                <div class="agent-cell {% if agent.id|stringformat:"s" in selected_ids %}selected{% endif %}">
+                    <img src="{{ agent.image.url }}" alt="{{ agent.name }}" class="agent-img">
+                    <div class="selection-overlay"></div>
+                </div>
+            </label>
+        {% endfor %}
+        <button type="submit" class="randomize-btn">
+    <img src="{% static 'img/Comedy_and_the_Tragedy_Spray.webp' %}" alt="Randomize" class="randomize-icon">
+    <span class="randomize-text">RANDOMIZE</span>
+</button>
+    </div>
+
+    <!-- Права панель з результатом -->
+    <div class="result-panel">
+        {% if character %}
+            <h2>{{ character.name }}</h2>
+            <img src="{{ character.image.url }}" alt="{{ character.name }}" width="200">
+            <p><strong>Role: </strong> {{ character.role }}</p>
+            <p>{{ character.description }}</p>
+        {% elif request.method == 'POST' %}
+            <h2>No agent selected!</h2>
+            <img src="{% static 'img/Hang_In_There_Mance_Spray.webp' %}" alt="Нічого не обрано" width="200">
+            <p>Please select at least one agent for random selection.</p>
+        {% endif %}
+    </div>
+</form>
+
+<script>
+    document.querySelectorAll('.agent-label').forEach(label => {
+        label.addEventListener('click', function (e) {
+            e.preventDefault();
+            const checkbox = this.querySelector('input[type="checkbox"]');
+            const cell = this.querySelector('.agent-cell');
+            
+            checkbox.checked = !checkbox.checked;
+            cell.classList.toggle('selected', checkbox.checked);
+            
+            // Додаємо клас для анімації
+            if (checkbox.checked) {
+                cell.classList.add('animate-selection');
+                setTimeout(() => cell.classList.remove('animate-selection'), 300);
+            } else {
+                cell.classList.add('animate-deselection');
+                setTimeout(() => cell.classList.remove('animate-deselection'), 300);
+            }
+        });
+    });
+
+    function selectAll() {
+        document.querySelectorAll('input[name="selected_agents"]').forEach(checkbox => {
+            if (!checkbox.checked) {
+                checkbox.checked = true;
+                const cell = checkbox.closest('label').querySelector('.agent-cell');
+                cell.classList.add('selected', 'animate-selection');
+                setTimeout(() => cell.classList.remove('animate-selection'), 300);
+            }
+        });
+    }
+
+    function clearAll() {
+        document.querySelectorAll('input[name="selected_agents"]').forEach(checkbox => {
+            if (checkbox.checked) {
+                checkbox.checked = false;
+                const cell = checkbox.closest('label').querySelector('.agent-cell');
+                cell.classList.remove('selected');
+                cell.classList.add('animate-deselection');
+                setTimeout(() => cell.classList.remove('animate-deselection'), 300);
+            }
+        });
+    }
+
+    function selectByClass(role) {
+        document.querySelectorAll('.agent-label').forEach(label => {
+            if (label.dataset.class === role) {
+                const checkbox = label.querySelector('input[name="selected_agents"]');
+                const cell = label.querySelector('.agent-cell');
+                
+                checkbox.checked = !checkbox.checked;
+                cell.classList.toggle('selected', checkbox.checked);
+                
+                if (checkbox.checked) {
+                    cell.classList.add('animate-selection');
+                    setTimeout(() => cell.classList.remove('animate-selection'), 300);
+                } else {
+                    cell.classList.add('animate-deselection');
+                    setTimeout(() => cell.classList.remove('animate-deselection'), 300);
+                }
+            }
+        });
+    }
+</script>
+
+{% endblock content %}
+
+{% comment %} {% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Randomizer{% endblock title %}
+
+{% block content %}
+<h2 class="page-title">Randomizer </h2>
+
+<form method="POST" id="agents-form" class="randomizer-container">
+    {% csrf_token %}
+
+    <!-- Ліва панель з кнопками -->
+    <div class="side-panel">
+        <button type="button" onclick="selectAll()">Choose All</button>
+        <button type="button" onclick="clearAll()">Clear All</button>
+        <button type="button" onclick="selectByClass('Sentinel')">
+            <img src="{% static 'img/frame2.png' %}" alt="Sentinel" class="role-icon">
+        </button>
+        <button type="button" onclick="selectByClass('Duelist')">
+            <img src="{% static 'img/frame4.png' %}" alt="Duelist" class="role-icon">
+        </button>
+        <button type="button" onclick="selectByClass('Controller')">
+            <img src="{% static 'img/frame3.png' %}" alt="Controller" class="role-icon">
+        </button>
+        <button type="button" onclick="selectByClass('Initiator')">
+            <img src="{% static 'img/frame1.png' %}" alt="Initiator" class="role-icon">
+        </button>
+        <!-- Додай інші ролі за потреби -->
+    </div>
+
+    <!-- Матриця агентів -->
+    <div class="agent-grid">
+        {% for agent in agents %}
+            <label class="agent-label" data-class="{{ agent.role }}">
+                <input type="checkbox" name="selected_agents" value="{{ agent.id }}"
+                       {% if agent.id|stringformat:"s" in selected_ids %}checked{% endif %}
+                       style="display: none;">
+                <div class="agent-cell {% if agent.id|stringformat:"s" in selected_ids %}selected{% endif %}">
+                    <img src="{{ agent.image.url }}" alt="{{ agent.name }}" class="agent-img">
+                </div>
+            </label>
+        {% endfor %}
+        <button type="submit" class="randomize-btn">🎲 Randomize</button>
+    </div>
+
+    <!-- Права панель з результатом -->
+    <div class="result-panel">
+        {% if character %}
+            <h2>{{ character.name }}</h2>
+            <img src="{{ character.image.url }}" alt="{{ character.name }}" width="200">
+            <p><strong>Role: </strong> {{ character.role }}</p>
+            <p>{{ character.description }}</p>
+        {% elif request.method == 'POST' %}
+            <h2>No agent selected!</h2>
+            <img src="{% static 'img/Hang_In_There_Mance_Spray.webp' %}" alt="Нічого не обрано" width="200">
+            <p>Please select at least one agent for random selection.</p>
+        {% endif %}
+    </div>
+</form>
+
+<script>
+    document.querySelectorAll('.agent-label').forEach(label => {
+        label.addEventListener('click', function (e) {
+            e.preventDefault();
+            const checkbox = this.querySelector('input[type="checkbox"]');
+            const cell = this.querySelector('.agent-cell');
+
+            checkbox.checked = !checkbox.checked;
+            cell.classList.toggle('selected', checkbox.checked);
+        });
+    });
+
+    function selectAll() {
+        document.querySelectorAll('input[name="selected_agents"]').forEach(checkbox => {
+            checkbox.checked = true;
+            checkbox.closest('label').querySelector('.agent-cell').classList.add('selected');
+        });
+    }
+
+    function clearAll() {
+        document.querySelectorAll('input[name="selected_agents"]').forEach(checkbox => {
+            checkbox.checked = false;
+            checkbox.closest('label').querySelector('.agent-cell').classList.remove('selected');
+        });
+    }
+
+    function selectByClass(role) {
+    document.querySelectorAll('.agent-label').forEach(label => {
+        const checkbox = label.querySelector('input[name="selected_agents"]');
+        const agentCell = label.querySelector('.agent-cell');
+        
+        // Перевіряємо, чи label відповідає ролі
+        const isMatch = label.dataset.class === role;
+        
+        // Якщо label відповідає ролі, перемикаємо стан чекбоксу
+        if (isMatch) {
+            checkbox.checked = !checkbox.checked;
+            agentCell.classList.toggle('selected', checkbox.checked);
+        }
+    });
+}
+</script>
+
+{% endblock content %} {% endcomment %}
