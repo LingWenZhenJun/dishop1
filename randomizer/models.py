@@ -17,7 +17,7 @@ class Role(models.Model):
 class Agent(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100, unique=True, blank=True)  # Додай це поле
-    image = models.ImageField(upload_to='agent/')
+    image = models.ImageField(upload_to='agents/') 
     role = models.ForeignKey(Role, related_name='agents', on_delete=models.CASCADE, null=True)
     description = models.TextField()
 
