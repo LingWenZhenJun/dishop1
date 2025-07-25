@@ -33,6 +33,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = True
 
 ALLOWED_HOSTS = ['dishop1.onrender.com', '127.0.0.1', '0.0.0.0']
+CSRF_TRUSTED_ORIGINS = ['https://dishop1.onrender.com']
 
 
 # Application definition
