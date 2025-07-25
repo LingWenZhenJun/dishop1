@@ -96,8 +96,9 @@
   const balls = Array.from(images).map(img => {
     return {
       el: img,
-      x: Math.random() * (bounds.width - 60),
-      y: Math.random() * (bounds.height - 60),
+      x: 60 + Math.random() * (bounds.width - 150),
+      y: 60 + Math.random() * (bounds.height - 150),
+
       dx: (Math.random() - 0.5) * 2,
       dy: (Math.random() - 0.5) * 2,
       radius: 30
