@@ -66,12 +66,13 @@ class Product(models.Model):
         return self.price
     
 
+
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, related_name='images',
-                                on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='products/%Y/%m/%d', blank=True)
-    
+                              on_delete=models.CASCADE)
+    image = CloudinaryField('image', folder='products', blank=True)
     
     def __str__(self):
-        return f'{self.product.name} - {self.image.name}'
-    
+        if hasattr(self.image, 'public_id') and self.image.public_id:
+            return f'{self.product.name} - {self.image.public_id.split("/")[-1]}'
+        return f'{self.product.name} - No image'

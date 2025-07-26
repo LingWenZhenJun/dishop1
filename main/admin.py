@@ -22,3 +22,6 @@ class ProductAdmin(admin.ModelAdmin):
     list_editable = ['price', 'available', 'discount']
     prepopulated_fields = {'slug': ('name',)}
     inlines = [ProductImageInline]
+
+
+

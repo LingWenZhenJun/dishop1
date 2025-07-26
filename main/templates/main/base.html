@@ -24,12 +24,12 @@
         <navbar class="header-nav ">
             <ul class="header-list">
                 <li><a href="/" class="nav-a m-3">Home</a></li>
-                <li><a href="/shop" class="nav-a m-3">Shop</a></li>
+                <li><a href="shop/" class="nav-a m-3">Shop</a></li>
             </ul>
         </navbar>
            <!-- Центр (лого) - тепер перший у контейнері -->
         <div class="header-logo">
-            <a href="/randomizer"><img src="{% static 'img/blacklogo.png' %}" alt="Logo" class="di-logo"></a>
+            <a href="randomizer/"><img src="{% static 'img/blacklogo.png' %}" alt="Logo" class="di-logo"></a>
         </div>
             <div class="header-profile">
                 <a href="{% url "cart:cart_detail" %}"><img src="{% static 'img/carticon.png' %}" class="carticon" alt=""></a>
@@ -63,10 +63,10 @@
     <div class="right-sidebar">
   <nav>
     <ul>
-      <li><a href="/randomizer">Randomizer</a></li>
-      <li><a href="/gallery">Gallery</a></li>
-      <li><a href="/shop">Shop</a></li>
-      <li><a href="/about">About</a></li>
+      <li><a href="randomizer/">Randomizer</a></li>
+      <li><a href="gallery/">Gallery</a></li>
+      <li><a href="shop/">Shop</a></li>
+      <li><a href="about/">About</a></li>
     </ul>
   </nav>
 </div>

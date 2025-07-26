@@ -12,3 +12,5 @@ urlpatterns = [
          name='product_list_by_category'),
 
 ]
+
+

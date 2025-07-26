@@ -24,13 +24,21 @@
         <button class="prev-btn">&lsaquo;</button>
         <div class="detail-img">
             {% for image in product.images.all %}
-                <img class="detail-image" src="{{ image.image.url }}" alt="" style="display: none;" data-index="{{ forloop.counter0 }}">
+                <img class="detail-image" 
+                     src="{{ image.image.url }}" 
+                     alt="{{ product.name }}"
+                     style="display: {% if forloop.first %}block{% else %}none{% endif %};"
+                     data-index="{{ forloop.counter0 }}">
+            {% empty %}
+                <img class="detail-image" 
+                     src="{% static 'images/no_image.png' %}" 
+                     alt="No image"
+                     style="display: block;">
             {% endfor %}
-            
-                
+        </div>     
                 <button class="next-btn">&rsaquo;</button>
             
-        </div>
+        
          </div>
 
 
