@@ -1,10 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from cloudinary.models import CloudinaryField
 
 
 class User(AbstractUser):
-    image = models.ImageField(upload_to='users_image',blank=True,
-                              null=True)
+    image = CloudinaryField('image', folder='users_image', blank=True, null=True)
     
     
     class Meta:
