@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+from cloudinary.models import CloudinaryField
 
 class Role(models.Model):
     name = models.CharField(max_length=30, unique=True)
@@ -17,7 +18,8 @@ class Role(models.Model):
 class Agent(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100, unique=True, blank=True)  # Додай це поле
-    image = models.ImageField(upload_to='agents/') 
+    # image = models.ImageField(upload_to='agents/') 
+    image = CloudinaryField('image') 
     role = models.ForeignKey(Role, related_name='agents', on_delete=models.CASCADE, null=True)
     description = models.TextField()
 

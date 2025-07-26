@@ -14,6 +14,18 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 import dj_database_url
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+import logging
+
+
+# Import the CloudinaryImage and CloudinaryVideo methods for the simplified syntax used in this guide
+from cloudinary import CloudinaryImage
+from cloudinary import CloudinaryVideo
+
+logging.basicConfig(level=logging.DEBUG)
+
 
 
 
@@ -44,7 +56,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    
     'main',
     'cart',
     'users',
@@ -53,6 +65,10 @@ INSTALLED_APPS = [
     'randomizer',
     'cloudinary',
     'cloudinary_storage',
+
+
+
+    'django.contrib.staticfiles',
 ]
 
 MIDDLEWARE = [
@@ -154,7 +170,7 @@ CLOUDINARY_STORAGE = {
     'API_KEY': os.getenv('API_KEY'),
     'API_SECRET': os.getenv('API_SECRET')
 }
-
+CLOUDINARY_URL = os.getenv('CLOUDINARY_URL')
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 
