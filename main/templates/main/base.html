@@ -11,25 +11,29 @@
     {% comment %} css {% endcomment %}
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
       <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --main-font: 'Montserrat', sans-serif;
-    }
-  </style>
 </head>
 <body>
-    <header class="header sticky-top">
+    <!-- Mobile Header -->
+    <div class="mobile-header">
+        <div class="mobile-menu-toggle">☰</div>
+        <div class="mobile-logo">
+            <a href="/randomizer/"><img src="{% static 'img/blacklogo.png' %}" alt="Logo"></a>
+        </div>
+    </div>
+
+
+    <header class="desktop-header sticky-top">
     <div class="header-container">
         <!-- Ліва частина (навігація) -->
         <navbar class="header-nav ">
             <ul class="header-list">
                 <li><a href="/" class="nav-a m-3">Home</a></li>
-                <li><a href="shop/" class="nav-a m-3">Shop</a></li>
+                <li><a href="/shop/" class="nav-a m-3">Shop</a></li>
             </ul>
         </navbar>
            <!-- Центр (лого) - тепер перший у контейнері -->
         <div class="header-logo">
-            <a href="randomizer/"><img src="{% static 'img/blacklogo.png' %}" alt="Logo" class="di-logo"></a>
+            <a href="/randomizer/"><img src="{% static 'img/blacklogo.png' %}" alt="Logo" class="di-logo"></a>
         </div>
             <div class="header-profile">
                 <a href="{% url "cart:cart_detail" %}"><img src="{% static 'img/carticon.png' %}" class="carticon" alt=""></a>
@@ -54,18 +58,31 @@
 
 
     
-    <div class="container">
+    
+
+
+    <nav class="mobile-sidebar">
+        <ul>
+            <li><a href="/randomizer/">Randomizer</a></li>
+            <li><a href="/gallery/">Gallery</a></li>
+            <li><a href="/shop/">Shop</a></li>
+            <li><a href="/about/">About</a></li>
+        </ul>
+    </nav>
+
+    <div class="main-content">
 
         {% block content %}
         {% endblock content %}
     </div>
 
+    
     <div class="right-sidebar">
   <nav>
     <ul>
-      <li><a href="randomizer/">Randomizer</a></li>
+      <li><a href="/randomizer/">Randomizer</a></li>
       <li><a href="gallery/">Gallery</a></li>
-      <li><a href="shop/">Shop</a></li>
+      <li><a href="/shop/">Shop</a></li>
       <li><a href="about/">About</a></li>
     </ul>
   </nav>
@@ -77,7 +94,7 @@
     <img src="{% static 'img/frame3.png' %}" class="frame3" alt="">
     <img src="{% static 'img/frame4.png' %}" class="frame4" alt=""> {% endcomment %}
     
-    <div class="valsidebar">
+    <div class="left-sidebar valsidebar">
         <div class="image" id="img1"><img src="{% static 'img/frame1.png' %}"></div>
   <div class="image" id="img2"><img src="{% static 'img/frame2.png' %}"></div>
   <div class="image" id="img3"><img src="{% static 'img/frame3.png' %}"></div>
@@ -167,5 +184,7 @@
 
     {% comment %} js for boorstrap {% endcomment %}
     <script src="{% static 'bootstrap\js\bootstrap.bundle.min.js' %}"></script>
-</body>
+        <script src="{% static 'js/base.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  </body>
 </html>

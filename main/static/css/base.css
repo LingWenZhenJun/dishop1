@@ -1,9 +1,197 @@
-@import url('https://fonts.googleapis.com/css2?family=Carrois+Gothic&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Carrois+Gothic&display=swap'); */
 
 :root {
     --box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.363);
     --main-font: 'Montserrat', sans-serif;
 }
+
+:root {
+    --sidebar-width: 200px;
+    --header-height: 80px;
+    --mobile-logo-size: 50px;
+    --transition-speed: 0.3s;
+}
+
+/* Base Styles */
+body {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* Desktop Header */
+.desktop-header {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    height: var(--header-height);
+    padding: 0 20px;
+    background: #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.header-logo img {
+    height: 50px;
+    width: auto;
+}
+
+/* Mobile Header */
+.mobile-header {
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.mobile-logo img {
+    width: var(--mobile-logo-size);
+    height: var(--mobile-logo-size);
+}
+
+.mobile-menu-toggle {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* Sidebars */
+.left-sidebar,
+.right-sidebar {
+    position: fixed;
+    top: var(--header-height);
+    bottom: 0;
+    width: var(--sidebar-width);
+    padding: 20px;
+    background: #f8f9fa;
+    transition: all var(--transition-speed) ease;
+}
+
+.left-sidebar {
+    left: 0;
+}
+
+.right-sidebar {
+    right: 0;
+}
+
+/* Mobile Sidebar */
+.mobile-sidebar {
+    position: fixed;
+    left: -100%;
+    top: 0;
+    width: 80%;
+    height: 100vh;
+    background: #fff;
+    z-index: 1000;
+    padding-top: 60px;
+    transition: left var(--transition-speed) ease;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+}
+
+.mobile-sidebar.active {
+    left: 0;
+}
+
+.mobile-sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.mobile-sidebar li {
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.mobile-sidebar a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+}
+
+/* Main Content */
+.main-content {
+    margin: var(--header-height) var(--sidebar-width) 0 var(--sidebar-width);
+    padding: 20px;
+    min-height: calc(100vh - var(--header-height));
+    transition: all var(--transition-speed) ease;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .left-sidebar,
+    .right-sidebar {
+        width: 150px;
+    }
+    .main-content {
+        margin-left: 150px;
+        margin-right: 150px;
+    }
+}
+
+@media (max-width: 768px) {
+    .desktop-header {
+        display: none;
+    }
+    
+    .mobile-header {
+        display: flex;
+    }
+    
+    .left-sidebar,
+    .right-sidebar {
+        display: none;
+    }
+    
+    .main-content {
+        margin: 60px 0 0 0;
+        padding: 15px;
+    }
+    
+    /* Floating images animation */
+    .valsidebar .image img {
+        width: 40px;
+        position: fixed;
+        z-index: 999;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
  /* @font-face {
     font-family: "Montserrat";
@@ -15,16 +203,15 @@
     font-size: 48px;
     line-height: 0;
 }  */
-
+/* 
 body {
-    /* font-family: "Carrois Gothic", sans-serif; */
     font-family: var(--main-font);
     font-size: 18px;
     padding: 0;
     margin: 0;
-    /* overflow-x: hidden; */
+    overflow-x: hidden;
     
-}
+} */
 
 ul {
     list-style: none;
@@ -109,7 +296,7 @@ input:focus {
     text-transform: uppercase;
 }
 
-.container {
+.main-content{
     box-sizing: border-box;
     max-width: 1600px;
     margin: 0 auto;
@@ -132,10 +319,10 @@ input:focus {
     display: grid !important; /* Перебиває bootstrap-івський d-flex */
 }
 
-.header-logo {
+/* .header-logo {
     grid-column: 2;
     text-align: center;
-}
+} */
 
 .di-logo {
     height: 50px;
@@ -303,16 +490,7 @@ input:focus {
 }
 
 .right-sidebar {
-  position: fixed;     /* фіксується до країв вікна */
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 180px;
-  margin-top: 80px;
-  background-color: #ffffff;
-  
   border-left: 1px solid #ccc;
-  /* height: calc(100% - 100px); */
   box-shadow: -2px 0 4px rgba(0, 0, 0, 0.1);
   z-index: 101;
 }
